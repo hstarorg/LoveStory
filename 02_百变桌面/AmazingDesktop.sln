@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01_桌面下载器", "01_桌面下载器", "{D1ED35EB-9B10-4901-8D3D-266BF036CADA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazingDestop", "AmazingDestop\AmazingDestop.csproj", "{B1643163-A105-4FE1-9A5B-2460DAADBBAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloadInterface", "ImageDownloadInterface\ImageDownloadInterface.csproj", "{BE0362F7-D364-492E-9D62-C90069DBFE09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeizituImpl", "MeizituImpl\MeizituImpl.csproj", "{9D810043-81E2-46F8-8210-0852E08E948A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1643163-A105-4FE1-9A5B-2460DAADBBAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1643163-A105-4FE1-9A5B-2460DAADBBAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1643163-A105-4FE1-9A5B-2460DAADBBAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1643163-A105-4FE1-9A5B-2460DAADBBAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE0362F7-D364-492E-9D62-C90069DBFE09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE0362F7-D364-492E-9D62-C90069DBFE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE0362F7-D364-492E-9D62-C90069DBFE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE0362F7-D364-492E-9D62-C90069DBFE09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D810043-81E2-46F8-8210-0852E08E948A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D810043-81E2-46F8-8210-0852E08E948A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D810043-81E2-46F8-8210-0852E08E948A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D810043-81E2-46F8-8210-0852E08E948A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE0362F7-D364-492E-9D62-C90069DBFE09} = {D1ED35EB-9B10-4901-8D3D-266BF036CADA}
+		{9D810043-81E2-46F8-8210-0852E08E948A} = {D1ED35EB-9B10-4901-8D3D-266BF036CADA}
+	EndGlobalSection
+EndGlobal
