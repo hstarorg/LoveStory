@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
 using RoseLove.Extensions;
@@ -30,7 +31,7 @@ namespace RoseLove
                 Angle = 10.5f,
                 X = 200,
                 Y = 0,
-                Speed = 5,
+                Speed = 1,
                 Img = AA(img).GetRotateImage(10.5f)
             });
             ballonList.Add(new Balloon
@@ -38,9 +39,14 @@ namespace RoseLove
                 Angle = -10.5f,
                 X = 400,
                 Y = 0,
-                Speed = 7,
+                Speed = 3,
                 Img = AA(img)
             });
+
+            Timer timer = new Timer();
+            timer.Interval = 50;
+            timer.Tick += timer1_Tick;
+            timer.Start();
         }
 
         public Image AA(Image img)
@@ -59,9 +65,16 @@ namespace RoseLove
         private void FrmMain_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             var invalidIndexList = new List<int>();
             for (int i = 0, len = ballonList.Count; i < len; i++)
             {
+                g.ResetTransform();
+                g.TranslateTransform(-16, -16, MatrixOrder.Append); //Æ½ÒÆ
+                //g.ScaleTransform(s.Scale, s.Scale, MatrixOrder.Append); //Ëõ·Å
+                //g.RotateTransform(s.Rotation, MatrixOrder.Append); //Ðý×ª
+                //g.TranslateTransform(s.X, s.Y, MatrixOrder.Append); //Æ½ÒÆ
+                //g.DrawImage(Snow, 0, 0); //»æÖÆ
                 var balloon = ballonList[i];
                 g.DrawImage(balloon.Img, new Rectangle(balloon.X, balloon.Y, 60, 92));
                 balloon.CalcLocation();
@@ -85,7 +98,7 @@ namespace RoseLove
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            this.Invalidate();
+            Refresh();
         }
     }
 }
