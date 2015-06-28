@@ -24,9 +24,14 @@ namespace RoseLove.Model
         /// </summary>
         public int Y { get; set; }
 
+        /// <summary>
+        /// 下降速度
+        /// </summary>
+        public int Speed { get; set; }
+
         public void CalcLocation()
         {
-            Y += 2;
+            Y += this.Speed;
         }
     }
 }
