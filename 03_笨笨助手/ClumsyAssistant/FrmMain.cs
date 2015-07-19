@@ -6,9 +6,11 @@ namespace ClumsyAssistant
 {
     public partial class FrmMain : Form
     {
+        private static TabControl mainTabControlStatic =null;
         public FrmMain()
         {
             InitializeComponent();
+            mainTabControlStatic = this.MainTabControl;
         }
 
         private void btnDataCheck_Click(object sender, EventArgs e)
@@ -26,6 +28,14 @@ namespace ClumsyAssistant
                 MainTabControl.TabPages.Add(tabPage);
             }
             MainTabControl.SelectTab(name);
+        }
+
+        public static void RemoveTabPage(string key)
+        {
+            if (mainTabControlStatic != null)
+            {
+                mainTabControlStatic.TabPages.RemoveByKey(key);
+            }
         }
     }
 }

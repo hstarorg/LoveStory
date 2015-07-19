@@ -36,7 +36,7 @@ namespace ClumsyAssistant.Pages
 
         private void Alert(string msg)
         {
-            MessageBox.Show(msg);
+            MessageBox.Show(msg,"爱心提示");
         }
 
         private void AddLog(string log)
@@ -140,7 +140,7 @@ namespace ClumsyAssistant.Pages
             for (int i = START_ROW_INDEX; i <= rowCount; i++)
             {
                 cell = sheet.GetRow(i).GetCell(colIndex);
-                if (numberList.Contains(cell.StringCellValue.Trim()))
+                if (cell!=null && numberList.Contains(cell.StringCellValue.Trim()))
                 {
                     cell.CellStyle = cellStyle;
                     colorRowCount++;
@@ -151,6 +151,7 @@ namespace ClumsyAssistant.Pages
             workbook.Write(fsDist);
             fsDist.Flush();
             fsDist.Close();
+            this.AddLog("已将差异单据在试剂部文件中着色，共标记行数：" + colorRowCount);
             if(DialogResult.Yes == MessageBox.Show("已将差异单据在试剂部文件中着色，共标记行数："+ colorRowCount +"，是否打开结果文件？","提示",MessageBoxButtons.YesNo))
             {
                 System.Diagnostics.Process.Start(destPath);
@@ -206,6 +207,7 @@ namespace ClumsyAssistant.Pages
                 sjbDocNoList = sjbDocNoList.Distinct().ToList();
                 this.AddLog("试剂部出/入库文件单据去重后总数：" + sjbDocNoList.Count);
                 var noList = sjbDocNoList.Except(txyDocNoList).ToList();
+                this.AddLog("试剂部出/入库文件与同兴源出/入库文件单据号差异数：" + noList.Count);
                 this.Alert("试剂部出/入库文件与同兴源出/入库文件单据号差异数：" + noList.Count);
                 this.FillBackgroundColor(TbFile2.Text, noList);
                 this.AddLog("校对完成，(^.^)");
@@ -213,5 +215,50 @@ namespace ClumsyAssistant.Pages
             BtnStart.Enabled = true;
         }
         #endregion
+
+        private void BtnClose_Click(object sender, EventArgs e)
+        {
+            FrmMain.RemoveTabPage("data_check");
+        }
+
+        private void TbFile_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Link;
+                TbFile.Cursor =Cursors.Arrow;  //指定鼠标形状（更好看）
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void TbFile_DragDrop(object sender, DragEventArgs e)
+        {
+            var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
+            TbFile.Text = path;
+            TbFile.Cursor = Cursors.IBeam; //还原鼠标形状
+        }
+
+        private void TbFile2_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Link;
+                TbFile2.Cursor = Cursors.Arrow;  //指定鼠标形状（更好看）
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void TbFile2_DragDrop(object sender, DragEventArgs e)
+        {
+            var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
+            TbFile2.Text = path;
+            TbFile2.Cursor = Cursors.IBeam; //还原鼠标形状
+        }
     }
 }

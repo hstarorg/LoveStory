@@ -30,6 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RtbLog = new System.Windows.Forms.RichTextBox();
             this.BtnStart = new System.Windows.Forms.Button();
             this.BtnSelectFile2 = new System.Windows.Forms.Button();
             this.BtnSelectFile = new System.Windows.Forms.Button();
@@ -37,7 +38,7 @@
             this.TbFile = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.RtbLog = new System.Windows.Forms.RichTextBox();
+            this.BtnClose = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +67,16 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "出/入库数据校对";
+            // 
+            // RtbLog
+            // 
+            this.RtbLog.BackColor = System.Drawing.Color.Black;
+            this.RtbLog.ForeColor = System.Drawing.Color.Red;
+            this.RtbLog.Location = new System.Drawing.Point(9, 134);
+            this.RtbLog.Name = "RtbLog";
+            this.RtbLog.Size = new System.Drawing.Size(345, 292);
+            this.RtbLog.TabIndex = 2;
+            this.RtbLog.Text = "日志信息：";
             // 
             // BtnStart
             // 
@@ -99,17 +110,23 @@
             // 
             // TbFile2
             // 
+            this.TbFile2.AllowDrop = true;
             this.TbFile2.Location = new System.Drawing.Point(115, 61);
             this.TbFile2.Name = "TbFile2";
             this.TbFile2.Size = new System.Drawing.Size(169, 21);
             this.TbFile2.TabIndex = 2;
+            this.TbFile2.DragDrop += new System.Windows.Forms.DragEventHandler(this.TbFile2_DragDrop);
+            this.TbFile2.DragEnter += new System.Windows.Forms.DragEventHandler(this.TbFile2_DragEnter);
             // 
             // TbFile
             // 
+            this.TbFile.AllowDrop = true;
             this.TbFile.Location = new System.Drawing.Point(115, 30);
             this.TbFile.Name = "TbFile";
             this.TbFile.Size = new System.Drawing.Size(169, 21);
             this.TbFile.TabIndex = 1;
+            this.TbFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.TbFile_DragDrop);
+            this.TbFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.TbFile_DragEnter);
             // 
             // label3
             // 
@@ -129,15 +146,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "groupBox1";
             // 
-            // RtbLog
+            // BtnClose
             // 
-            this.RtbLog.BackColor = System.Drawing.Color.Black;
-            this.RtbLog.ForeColor = System.Drawing.Color.Red;
-            this.RtbLog.Location = new System.Drawing.Point(9, 134);
-            this.RtbLog.Name = "RtbLog";
-            this.RtbLog.Size = new System.Drawing.Size(345, 292);
-            this.RtbLog.TabIndex = 2;
-            this.RtbLog.Text = "日志信息：";
+            this.BtnClose.Location = new System.Drawing.Point(696, 442);
+            this.BtnClose.Name = "BtnClose";
+            this.BtnClose.Size = new System.Drawing.Size(75, 23);
+            this.BtnClose.TabIndex = 2;
+            this.BtnClose.Text = "关闭";
+            this.BtnClose.UseVisualStyleBackColor = true;
+            this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
             // DataCheckPage
             // 
@@ -145,6 +162,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.BtnClose);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "DataCheckPage";
@@ -167,5 +185,6 @@
         private System.Windows.Forms.Button BtnSelectFile;
         private System.Windows.Forms.Button BtnStart;
         private System.Windows.Forms.RichTextBox RtbLog;
+        private System.Windows.Forms.Button BtnClose;
     }
 }
