@@ -1,0 +1,23 @@
+{
+  "name": "tanabata-love",
+  "version": "0.1.0",
+  "homepage": "https://github.com/hstarorg/LoveStory",
+  "authors": [
+    "Jay.M.Hu <hm910705@163.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jquery-snowfall": "~1.7.4",
+    "jquery-backstretch": "~2.0.4",
+    "typed.js": "*"
+  }
+}
