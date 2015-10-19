@@ -37,5 +37,10 @@ namespace ClumsyAssistant
                 mainTabControlStatic.TabPages.RemoveByKey(key);
             }
         }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            AddNewTabPage<TestPage>("test","测试页面");
+        }
     }
 }

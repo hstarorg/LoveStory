@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ClumsyAssistant
@@ -14,6 +13,7 @@ namespace ClumsyAssistant
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            new Aspose.Cells.License().SetLicense(License.LStream);
             Application.Run(new FrmMain());
         }
     }

@@ -7,10 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
-using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
+using Aspose.Cells;
+using Aspose.Cells.Drawing;
 
 namespace ClumsyAssistant.Pages
 {
@@ -36,7 +34,7 @@ namespace ClumsyAssistant.Pages
 
         private void Alert(string msg)
         {
-            MessageBox.Show(msg,"爱心提示");
+            MessageBox.Show(msg, "爱心提示");
         }
 
         private void AddLog(string log)
@@ -45,12 +43,12 @@ namespace ClumsyAssistant.Pages
             RtbLog.Text = logBuilder.ToString();
         }
 
-        private int GetDocumentNumberColIndex(ISheet sheet)
+        private int GetDocumentNumberColIndex(Worksheet sheet)
         {
-            var cells = sheet.GetRow(0).Cells;
-            for (int i = 0; i < cells.Count; i++)
+            var cells = sheet.Cells;
+            for (int i = 0; i <= cells.MaxColumn; i++)
             {
-                if (cells[i].StringCellValue.StartsWith("单据编号"))
+                if (cells[0, i].StringValue.StartsWith("单据编号"))
                 {
                     return i;
                 }
@@ -58,19 +56,6 @@ namespace ClumsyAssistant.Pages
             return -1;
         }
 
-        private IWorkbook GetWorkbook(string filepath)
-        {
-            var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            if (filepath.IndexOf(".xlsx", StringComparison.Ordinal) > 0) // 2007版本
-            {
-                return new XSSFWorkbook(fs);
-            }
-            else if (filepath.IndexOf(".xls", StringComparison.Ordinal) > 0) // 2003版本
-            {
-                return new HSSFWorkbook(fs);
-            }
-            return null;
-        }
 
         /// <summary>
         /// 根据Excel文件路径，获取单据编号
@@ -81,12 +66,10 @@ namespace ClumsyAssistant.Pages
         private List<string> GetDocumentNumber(string filepath)
         {
             var results = new List<string>();
-            IWorkbook workbook = null;
-            FileStream fs = null;
             try
             {
-                workbook = this.GetWorkbook(filepath);
-                var sheet = workbook.GetSheetAt(0);
+                var workbook = new Workbook(filepath);
+                var sheet = workbook.Worksheets[0];
                 int colIndex = this.GetDocumentNumberColIndex(sheet);
                 if (colIndex < 0)
                 {
@@ -94,17 +77,16 @@ namespace ClumsyAssistant.Pages
                     return null;
                 }
                 //     sheet.GetRow(1).RowStyle.FillBackgroundColor
-                int rowCount = sheet.LastRowNum;
+                int rowCount = sheet.Cells.MaxRow;
                 //为什么用<= rowCount?因为LastRowNum是从0开始计算，所以真正的行数应该是LastRowNum+1
                 for (int i = START_ROW_INDEX; i <= rowCount; i++)
                 {
-
-                    var cell = sheet.GetRow(i).GetCell(colIndex);
+                    var cell = sheet.Cells[i, colIndex];
                     if (cell == null)
                     {
                         break;
                     }
-                    results.Add(cell.StringCellValue);
+                    results.Add(cell.StringValue.Trim());
                 }
                 return results;
             }
@@ -116,43 +98,44 @@ namespace ClumsyAssistant.Pages
             {
                 this.Alert("获取单据号失败 => " + ex.Message);
             }
-            finally
-            {
-                if (fs != null) fs.Dispose();
-            }
             return null;
         }
 
         private void FillBackgroundColor(string filepath, IList<string> numberList)
         {
             this.AddLog("正在对差异文件进行着色");
-            var workbook = this.GetWorkbook(filepath);
-            var sheet = workbook.GetSheetAt(0);
-            var rowCount = sheet.LastRowNum;
+            var workbook = new Workbook(filepath);
+            var sheet = workbook.Worksheets[0];
+            var rowCount = sheet.Cells.MaxRow;
 
-            var cellStyle = workbook.CreateCellStyle();
-            cellStyle.FillForegroundColor = HSSFColor.LightGreen.Index;
-            cellStyle.FillPattern = FillPattern.SolidForeground;
+
+            var cellStyle = workbook.CreateStyle();
+            cellStyle.BackgroundColor = Color.LightGreen;
+            cellStyle.Pattern = BackgroundType.Solid;
+            cellStyle.Font.Size = 40;
+            //new Style {BackgroundColor = Color.LightGreen};
+            //                        cellStyle.FillForegroundColor = HSSFColor.LightGreen.Index;
+            //                        cellStyle.FillPattern = FillPattern.SolidForeground;
 
             int colIndex = this.GetDocumentNumberColIndex(sheet);
             int colorRowCount = 0;
-            ICell cell;
             for (int i = START_ROW_INDEX; i <= rowCount; i++)
             {
-                cell = sheet.GetRow(i).GetCell(colIndex);
-                if (cell!=null && numberList.Contains(cell.StringCellValue.Trim()))
+                Cell cell = sheet.Cells[i, colIndex];
+                if (cell != null && numberList.Contains(cell.StringValue.Trim()))
                 {
-                    cell.CellStyle = cellStyle;
+                    var style = cell.GetStyle();
+                    style.Pattern = BackgroundType.Solid;
+                    style.ForegroundColor = Color.Red;
+                    cell.SetStyle(style);
                     colorRowCount++;
                 }
             }
             var destPath = Path.GetDirectoryName(filepath) + "/" + Path.GetFileName(filepath).Replace(".xls", "_校对结果.xls");
-            var fsDist = new FileStream(destPath, FileMode.Create);
-            workbook.Write(fsDist);
-            fsDist.Flush();
-            fsDist.Close();
+
+            workbook.Save(destPath);
             this.AddLog("已将差异单据在试剂部文件中着色，共标记行数：" + colorRowCount);
-            if(DialogResult.Yes == MessageBox.Show("已将差异单据在试剂部文件中着色，共标记行数："+ colorRowCount +"，是否打开结果文件？","提示",MessageBoxButtons.YesNo))
+            if (DialogResult.Yes == MessageBox.Show("已将差异单据在试剂部文件中着色，共标记行数：" + colorRowCount + "，是否打开结果文件？", "提示", MessageBoxButtons.YesNo))
             {
                 System.Diagnostics.Process.Start(destPath);
             }
@@ -226,7 +209,7 @@ namespace ClumsyAssistant.Pages
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 e.Effect = DragDropEffects.Link;
-                TbFile.Cursor =Cursors.Arrow;  //指定鼠标形状（更好看）
+                TbFile.Cursor = Cursors.Arrow;  //指定鼠标形状（更好看）
             }
             else
             {

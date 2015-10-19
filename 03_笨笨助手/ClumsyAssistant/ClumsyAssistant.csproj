@@ -32,26 +32,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>bbzs.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\NPOI.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OOXML, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\NPOI.OOXML.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXml4Net, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXmlFormats, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    <Reference Include="Aspose.Cells">
+      <HintPath>D:\Program Files (x86)\Aspose\Aspose.Cells for .NET\Bin\net3.5\Aspose.Cells.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -67,11 +53,18 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="License.cs" />
     <Compile Include="Pages\DataCheckPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Pages\DataCheckPage.Designer.cs">
       <DependentUpon>DataCheckPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TestPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\TestPage.Designer.cs">
+      <DependentUpon>TestPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +73,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\DataCheckPage.resx">
       <DependentUpon>DataCheckPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\TestPage.resx">
+      <DependentUpon>TestPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -103,6 +99,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="bbzs.ico" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
