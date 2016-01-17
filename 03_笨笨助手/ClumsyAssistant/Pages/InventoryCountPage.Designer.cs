@@ -1,6 +1,6 @@
 ﻿namespace ClumsyAssistant.Pages
 {
-    partial class DataCheckPage
+    partial class InventoryCountPage
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -65,7 +65,7 @@
             this.groupBox1.Size = new System.Drawing.Size(360, 432);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "出/入库数据校对";
+            this.groupBox1.Text = "库存盘点";
             // 
             // RtbLog
             // 
@@ -83,7 +83,7 @@
             this.BtnStart.Name = "BtnStart";
             this.BtnStart.Size = new System.Drawing.Size(75, 23);
             this.BtnStart.TabIndex = 3;
-            this.BtnStart.Text = "开始盘点";
+            this.BtnStart.Text = "开始校对";
             this.BtnStart.UseVisualStyleBackColor = true;
             this.BtnStart.Click += new System.EventHandler(this.BtnStart_Click);
             // 
@@ -146,7 +146,7 @@
             this.BtnClose.UseVisualStyleBackColor = true;
             this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
-            // DataCheckPage
+            // InventoryCountPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -154,7 +154,7 @@
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.BtnClose);
             this.Controls.Add(this.groupBox1);
-            this.Name = "DataCheckPage";
+            this.Name = "InventoryCountPage";
             this.Size = new System.Drawing.Size(774, 468);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

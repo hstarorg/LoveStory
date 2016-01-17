@@ -33,11 +33,11 @@
             this.系统SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于AToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.btnInventoryCount = new System.Windows.Forms.Button();
             this.btnDataCheck = new System.Windows.Forms.Button();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.HomeTabPage = new System.Windows.Forms.TabPage();
-            this.btnTest = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.MenuPanel.SuspendLayout();
             this.MainPanel.SuspendLayout();
@@ -69,13 +69,24 @@
             // 
             // MenuPanel
             // 
-            this.MenuPanel.Controls.Add(this.btnTest);
+            this.MenuPanel.Controls.Add(this.btnInventoryCount);
             this.MenuPanel.Controls.Add(this.btnDataCheck);
             this.MenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.MenuPanel.Location = new System.Drawing.Point(0, 25);
             this.MenuPanel.Name = "MenuPanel";
             this.MenuPanel.Size = new System.Drawing.Size(784, 40);
             this.MenuPanel.TabIndex = 1;
+            // 
+            // btnInventoryCount
+            // 
+            this.btnInventoryCount.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnInventoryCount.Location = new System.Drawing.Point(40, 0);
+            this.btnInventoryCount.Name = "btnInventoryCount";
+            this.btnInventoryCount.Size = new System.Drawing.Size(40, 40);
+            this.btnInventoryCount.TabIndex = 2;
+            this.btnInventoryCount.Text = "库存盘点";
+            this.btnInventoryCount.UseVisualStyleBackColor = true;
+            this.btnInventoryCount.Click += new System.EventHandler(this.btnInventoryCount_Click);
             // 
             // btnDataCheck
             // 
@@ -117,17 +128,6 @@
             this.HomeTabPage.Text = "主页";
             this.HomeTabPage.UseVisualStyleBackColor = true;
             // 
-            // btnTest
-            // 
-            this.btnTest.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnTest.Location = new System.Drawing.Point(40, 0);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(40, 40);
-            this.btnTest.TabIndex = 1;
-            this.btnTest.Text = "测试";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -162,7 +162,7 @@
         private System.Windows.Forms.TabControl MainTabControl;
         private System.Windows.Forms.TabPage HomeTabPage;
         private System.Windows.Forms.Button btnDataCheck;
-        private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Button btnInventoryCount;
     }
 }
 
