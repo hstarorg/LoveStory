@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -50,6 +51,7 @@ namespace ClumsyAssistant.Pages
             var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
             var materialBatchIdx = this.GetColIndexByColName(sheet, "批号");
             var materialNumberIndex = this.GetColIndexByColName(sheet, "常用单位数量");
+            var materialNameIndex = this.GetColIndexByColName(sheet, "物料名称");
             if (materialCodeIdx < 0)
             {
                 Common.Alert("没有找到[物料代码]列！");
@@ -67,6 +69,7 @@ namespace ClumsyAssistant.Pages
                     var cellForCode = sheet.Cells[i, materialCodeIdx];
                     var cellForBatch = sheet.Cells[i, materialBatchIdx];
                     var cellForNumber = sheet.Cells[i, materialNumberIndex];
+                    var cellForName = sheet.Cells[i, materialNameIndex];
                     if (cellForCode == null)
                     {
                         break;
@@ -75,7 +78,8 @@ namespace ClumsyAssistant.Pages
                     {
                         MaterialCode = cellForCode.StringValue.Trim(),
                         MaterialBatch = cellForBatch?.StringValue.Trim() ?? "",
-                        ActualNumber = cellForNumber.StringValue.ToNumber()
+                        ActualNumber = cellForNumber.StringValue.ToNumber(),
+                        MaterialName = cellForName.StringValue
                     });
                 }
             }
@@ -94,6 +98,7 @@ namespace ClumsyAssistant.Pages
             var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
             var materialBatchIdx = this.GetColIndexByColName(sheet, "物料批次");
             var materialNumberIndex = this.GetColIndexByColName(sheet, "实存数量");
+            var materialNameIndex = this.GetColIndexByColName(sheet, "物料名称");
             if (materialCodeIdx < 0)
             {
                 Common.Alert("没有找到[物料代码]列！");
@@ -111,6 +116,7 @@ namespace ClumsyAssistant.Pages
                     var cellForCode = sheet.Cells[i, materialCodeIdx];
                     var cellForBatch = sheet.Cells[i, materialBatchIdx];
                     var cellForNumber = sheet.Cells[i, materialNumberIndex];
+                    var cellForName = sheet.Cells[i, materialNameIndex];
                     if (cellForCode == null)
                     {
                         break;
@@ -119,7 +125,8 @@ namespace ClumsyAssistant.Pages
                     {
                         MaterialCode = cellForCode.StringValue.Trim(),
                         MaterialBatch = cellForBatch?.StringValue.Trim() ?? "",
-                        ActualNumber = cellForNumber.StringValue.ToNumber()
+                        ActualNumber = cellForNumber.StringValue.ToNumber(),
+                        MaterialName = cellForName.StringValue
                     });
                 }
             }
@@ -129,8 +136,13 @@ namespace ClumsyAssistant.Pages
         private void InitSheetFirstRow(Worksheet sheet)
         {
             sheet.Cells[0, 0].Value = "物料代码";
-            sheet.Cells[0, 1].Value = "物料批次";
-            sheet.Cells[0, 2].Value = "数量";
+            sheet.Cells[0, 1].Value = "物料名称";
+            sheet.Cells[0, 2].Value = "物料批次";
+            sheet.Cells[0, 3].Value = "数量";
+            sheet.Cells.SetColumnWidth(0, 50);
+            sheet.Cells.SetColumnWidth(1, 50);
+            sheet.Cells.SetColumnWidth(2, 30);
+            sheet.Cells.SetColumnWidth(3, 20);
         }
         private void BuildExcelFile(List<MaterialEntity> remainingData, List<MaterialEntity> txyOnlyData)
         {
@@ -146,59 +158,25 @@ namespace ClumsyAssistant.Pages
             for (int i = 1; i <= remainingData.Count; i++)
             {
                 sheetSjb.Cells[i, 0].Value = remainingData[i - 1].MaterialCode;
-                sheetSjb.Cells[i, 1].Value = remainingData[i - 1].MaterialBatch;
-                sheetSjb.Cells[i, 2].Value = remainingData[i - 1].ActualNumber;
+                sheetSjb.Cells[i, 1].Value = remainingData[i - 1].MaterialName;
+                sheetSjb.Cells[i, 2].Value = remainingData[i - 1].MaterialBatch;
+                sheetSjb.Cells[i, 3].Value = remainingData[i - 1].ActualNumber;
             }
             for (int i = 1; i <= txyOnlyData.Count; i++)
             {
                 sheetTxy.Cells[i, 0].Value = txyOnlyData[i - 1].MaterialCode;
-                sheetTxy.Cells[i, 1].Value = txyOnlyData[i - 1].MaterialBatch;
-                sheetTxy.Cells[i, 2].Value = txyOnlyData[i - 1].ActualNumber;
+                sheetTxy.Cells[i, 1].Value = txyOnlyData[i - 1].MaterialName;
+                sheetTxy.Cells[i, 2].Value = txyOnlyData[i - 1].MaterialBatch;
+                sheetTxy.Cells[i, 3].Value = txyOnlyData[i - 1].ActualNumber;
             }
-            var cell = sheetSjb.Cells[0, 0].Value;
             var destPath = Path.GetDirectoryName(TbFile2.Text) + "/盘点结果数据表.xls";
             workbook.Save(destPath);
+            if (MessageBox.Show("导出文件成功，是否要打开文件？", "爱心提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                DialogResult.Yes)
+            {
+                Process.Start(destPath);
+            }
         }
-
-        //        private void FillBackgroundColor(string filepath, IList<string> numberList)
-        //        {
-        //            this.AddLog("正在对差异文件进行着色");
-        //            var workbook = new Workbook(filepath);
-        //            var sheet = workbook.Worksheets[0];
-        //            var rowCount = sheet.Cells.MaxRow;
-        //
-        //
-        //            var cellStyle = workbook.CreateStyle();
-        //            cellStyle.BackgroundColor = Color.LightGreen;
-        //            cellStyle.Pattern = BackgroundType.Solid;
-        //            cellStyle.Font.Size = 40;
-        //            //new Style {BackgroundColor = Color.LightGreen};
-        //            //                        cellStyle.FillForegroundColor = HSSFColor.LightGreen.Index;
-        //            //                        cellStyle.FillPattern = FillPattern.SolidForeground;
-        //
-        //            int colIndex = this.GetDocumentNumberColIndex(sheet);
-        //            int colorRowCount = 0;
-        //            for (int i = START_ROW_INDEX; i <= rowCount; i++)
-        //            {
-        //                Cell cell = sheet.Cells[i, colIndex];
-        //                if (cell != null && numberList.Contains(cell.StringValue.Trim()))
-        //                {
-        //                    var style = cell.GetStyle();
-        //                    style.Pattern = BackgroundType.Solid;
-        //                    style.ForegroundColor = Color.Red;
-        //                    cell.SetStyle(style);
-        //                    colorRowCount++;
-        //                }
-        //            }
-        //            var destPath = Path.GetDirectoryName(filepath) + "/" + Path.GetFileName(filepath).Replace(".xls", "_校对结果.xls");
-        //
-        //            workbook.Save(destPath);
-        //            this.AddLog("已将差异单据在试剂部文件中着色，共标记行数：" + colorRowCount);
-        //            if (DialogResult.Yes == MessageBox.Show("已将差异单据在试剂部文件中着色，共标记行数：" + colorRowCount + "，是否打开结果文件？", "提示", MessageBoxButtons.YesNo))
-        //            {
-        //                System.Diagnostics.Process.Start(destPath);
-        //            }
-        //        }
         #endregion
 
         #region 事件处理
@@ -248,6 +226,7 @@ namespace ClumsyAssistant.Pages
                     return new MaterialEntity()
                     {
                         MaterialCode = temp.MaterialCode,
+                        MaterialName = temp.MaterialName,
                         MaterialBatch = temp.MaterialBatch,
                         ActualNumber = x.Where(x2 => x2.ActualNumber > 0).Sum(x1 => x1.ActualNumber)
                     };
@@ -259,6 +238,7 @@ namespace ClumsyAssistant.Pages
                     return new MaterialEntity()
                     {
                         MaterialCode = temp.MaterialCode,
+                        MaterialName = temp.MaterialName,
                         MaterialBatch = temp.MaterialBatch,
                         ActualNumber = x.Where(x2 => x2.ActualNumber > 0).Sum(x1 => x1.ActualNumber)
                     };
@@ -276,8 +256,10 @@ namespace ClumsyAssistant.Pages
                         resultData.Add(new MaterialEntity
                         {
                             MaterialCode = txyHasModel.MaterialCode,
+                            MaterialName = txyHasModel.MaterialName,
                             MaterialBatch = txyHasModel.MaterialBatch,
-                            ActualNumber = remainingNumber
+                            ActualNumber = remainingNumber,
+
                         });
                     }
                 }

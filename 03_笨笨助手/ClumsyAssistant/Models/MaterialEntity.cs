@@ -18,6 +18,11 @@
         public double ActualNumber { get; set; }
 
         /// <summary>
+        /// 物料名称
+        /// </summary>
+        public string MaterialName { get; set; }
+
+        /// <summary>
         /// 是否是同兴源独有的
         /// </summary>
         public bool IsTxyOnly { get; set; }
