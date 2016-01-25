@@ -38,6 +38,7 @@
             this.MainPanel = new System.Windows.Forms.Panel();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.HomeTabPage = new System.Windows.Forms.TabPage();
+            this.btnPriceFetch = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.MenuPanel.SuspendLayout();
             this.MainPanel.SuspendLayout();
@@ -69,6 +70,7 @@
             // 
             // MenuPanel
             // 
+            this.MenuPanel.Controls.Add(this.btnPriceFetch);
             this.MenuPanel.Controls.Add(this.btnInventoryCount);
             this.MenuPanel.Controls.Add(this.btnDataCheck);
             this.MenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -128,6 +130,17 @@
             this.HomeTabPage.Text = "主页";
             this.HomeTabPage.UseVisualStyleBackColor = true;
             // 
+            // btnPriceFetch
+            // 
+            this.btnPriceFetch.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnPriceFetch.Location = new System.Drawing.Point(80, 0);
+            this.btnPriceFetch.Name = "btnPriceFetch";
+            this.btnPriceFetch.Size = new System.Drawing.Size(40, 40);
+            this.btnPriceFetch.TabIndex = 3;
+            this.btnPriceFetch.Text = "价格抓取";
+            this.btnPriceFetch.UseVisualStyleBackColor = true;
+            this.btnPriceFetch.Click += new System.EventHandler(this.btnPriceFetch_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -163,6 +176,7 @@
         private System.Windows.Forms.TabPage HomeTabPage;
         private System.Windows.Forms.Button btnDataCheck;
         private System.Windows.Forms.Button btnInventoryCount;
+        private System.Windows.Forms.Button btnPriceFetch;
     }
 }
 

@@ -55,6 +55,13 @@
     </Compile>
     <Compile Include="License.cs" />
     <Compile Include="Models\MaterialEntity.cs" />
+    <Compile Include="Models\MaterialPriceEntity.cs" />
+    <Compile Include="Pages\PriceFetchPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\PriceFetchPage.Designer.cs">
+      <DependentUpon>PriceFetchPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\InventoryCountPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -73,6 +80,9 @@
     <Compile Include="Utilities\StringExtension.cs" />
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\PriceFetchPage.resx">
+      <DependentUpon>PriceFetchPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\InventoryCountPage.resx">
       <DependentUpon>InventoryCountPage.cs</DependentUpon>

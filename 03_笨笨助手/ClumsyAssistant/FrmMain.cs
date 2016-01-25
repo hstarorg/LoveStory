@@ -42,6 +42,10 @@ namespace ClumsyAssistant
         {
             this.AddNewTabPage<InventoryCountPage>("inventory_count", "库存盘点");
         }
+        private void btnPriceFetch_Click(object sender, EventArgs e)
+        {
+            this.AddNewTabPage<PriceFetchPage>("price_fetch", "价格抓取");
+        }
         #endregion
     }
 }
