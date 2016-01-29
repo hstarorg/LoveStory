@@ -60,6 +60,10 @@ namespace ClumsyAssistant.Pages
             {
                 Common.Alert("没有找到[批号]列！");
             }
+            else if (materialNumberIndex < 0)
+            {
+                Common.Alert("没有找到[常用单位数量]列！");
+            }
             else
             {
                 int rowCount = sheet.Cells.MaxRow;
