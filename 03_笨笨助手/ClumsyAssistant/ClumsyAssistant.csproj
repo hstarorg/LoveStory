@@ -36,9 +36,9 @@
     <ApplicationIcon>bbzs.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Cells, Version=8.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Cells.8.7.0\lib\net40\Aspose.Cells.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Aspose.Cells, Version=8.4.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files (x86)\Aspose\Aspose.Cells for .NET\Bin\net3.5\Aspose.Cells.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -103,7 +103,6 @@
     </Compile>
     <None Include="app.config" />
     <None Include="InstallTools\build.bat" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -116,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bbzs.ico" />
+    <Content Include="InstallTools\Aspose.Cells.dll" />
     <Content Include="InstallTools\ILMerge.exe" />
   </ItemGroup>
   <ItemGroup />

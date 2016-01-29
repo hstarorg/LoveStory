@@ -50,7 +50,7 @@ namespace ClumsyAssistant.Pages
             var sheet = workbook.Worksheets[0];
             var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
             var materialBatchIdx = this.GetColIndexByColName(sheet, "批号");
-            var materialNumberIndex = this.GetColIndexByColName(sheet, "常用单位数量");
+            var materialNumberIndex = this.GetColIndexByColName(sheet, "数量");
             var materialNameIndex = this.GetColIndexByColName(sheet, "物料名称");
             if (materialCodeIdx < 0)
             {
@@ -62,7 +62,7 @@ namespace ClumsyAssistant.Pages
             }
             else if (materialNumberIndex < 0)
             {
-                Common.Alert("没有找到[常用单位数量]列！");
+                Common.Alert("没有找到[数量]列！");
             }
             else
             {
@@ -100,8 +100,8 @@ namespace ClumsyAssistant.Pages
             var workbook = new Workbook(filePath);
             var sheet = workbook.Worksheets[0];
             var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
-            var materialBatchIdx = this.GetColIndexByColName(sheet, "物料批次");
-            var materialNumberIndex = this.GetColIndexByColName(sheet, "实存数量");
+            var materialBatchIdx = this.GetColIndexByColName(sheet, "批号");
+            var materialNumberIndex = this.GetColIndexByColName(sheet, "数量");
             var materialNameIndex = this.GetColIndexByColName(sheet, "物料名称");
             if (materialCodeIdx < 0)
             {
@@ -109,7 +109,7 @@ namespace ClumsyAssistant.Pages
             }
             else if (materialBatchIdx < 0)
             {
-                Common.Alert("没有找到[物料批次]列！");
+                Common.Alert("没有找到[批号]列！");
             }
             else
             {
@@ -203,6 +203,11 @@ namespace ClumsyAssistant.Pages
             }
         }
 
+        /// <summary>
+        /// 数据校对
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnStart_Click(object sender, EventArgs e)
         {
             if (TbFile.Text == "" || !File.Exists(TbFile.Text))
@@ -282,53 +287,74 @@ namespace ClumsyAssistant.Pages
             this.BuildExcelFile(resultData, txyOnlyData);
             BtnStart.Enabled = true;
         }
+
+        /// <summary>
+        /// 价格合并
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnPriceMerge_Click(object sender, EventArgs e)
+        {
+            this.AddLog("开始将同兴源数量提取到试剂部！");
+            var txyData = this.GetTxyMaterialData(TbFile.Text);
+            this.AddLog("提取数量完成，正在生成Excel！");
+            this.BuildPriceMergeExcelFile(TbFile2.Text, txyData);
+            this.AddLog("生成成功！");
+
+        }
+
+        private void BuildPriceMergeExcelFile(string filePath, IList<MaterialEntity> txyData)
+        {
+            //数据变化
+            var txyDic = new Dictionary<string, double>();
+            txyData.ToList().ForEach((x) =>
+            {
+                var dicKey = $"{x.MaterialCode}$|${x.MaterialBatch}";
+                if (!txyDic.ContainsKey(dicKey))
+                {
+                    txyDic.Add(dicKey, x.ActualNumber);
+                }
+            });
+
+            var workbook = new Workbook(filePath);
+            var sheet = workbook.Worksheets[0];
+            var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
+            var materialBatchIdx = this.GetColIndexByColName(sheet, "批号");
+            //增加一列(同兴源数量列)
+            var txyCountIndex = 11;//sheet.Cells.Columns.Count;
+            sheet.Cells[0, txyCountIndex].Value = "同兴源数量";
+            //写入数据
+            int rowCount = sheet.Cells.MaxRow;
+            //为什么用<= rowCount?因为LastRowNum是从0开始计算，所以真正的行数应该是LastRowNum+1
+            for (int i = START_ROW_INDEX; i <= rowCount; i++)
+            {
+                var materialCode = sheet.Cells[i, materialCodeIdx].StringValue.Trim();
+                var materialBatch = sheet.Cells[i, materialBatchIdx].StringValue.Trim() ?? "";
+                var dicKey = $"{materialCode}$|${materialBatch}";
+                double count;
+                if (txyDic.TryGetValue(dicKey, out count))
+                {
+                    sheet.Cells[i, txyCountIndex].Value = count;
+                }
+            }
+            var destPath = Path.GetDirectoryName(TbFile2.Text) + "/试剂部库存盘点表.xls";
+            workbook.Save(destPath);
+            if (MessageBox.Show("导出文件成功，是否要打开文件？", "爱心提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                DialogResult.Yes)
+            {
+                Process.Start(destPath);
+            }
+        }
         #endregion
 
-        #region 拖拽控制和关闭按钮
+        #region 关闭按钮
         private void BtnClose_Click(object sender, EventArgs e)
         {
             FrmMain.RemoveTabPage("inventory_count");
         }
-
-        private void TbFile_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.Link;
-                TbFile.Cursor = Cursors.Arrow;  //指定鼠标形状（更好看）
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
-        }
-
-        private void TbFile_DragDrop(object sender, DragEventArgs e)
-        {
-            var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-            TbFile.Text = path;
-            TbFile.Cursor = Cursors.IBeam; //还原鼠标形状
-        }
-
-        private void TbFile2_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.Link;
-                TbFile2.Cursor = Cursors.Arrow;  //指定鼠标形状（更好看）
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
-        }
-
-        private void TbFile2_DragDrop(object sender, DragEventArgs e)
-        {
-            var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-            TbFile2.Text = path;
-            TbFile2.Cursor = Cursors.IBeam; //还原鼠标形状
-        }
+        
         #endregion
+
+       
     }
 }

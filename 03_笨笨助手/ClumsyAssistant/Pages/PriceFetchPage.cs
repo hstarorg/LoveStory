@@ -82,7 +82,7 @@ namespace ClumsyAssistant.Pages
             var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
             var materialBatchIdx = this.GetColIndexByColName(sheet, "批号");
             //增加一列
-            var priceCellIndex = sheet.Cells.Columns.Count;
+            var priceCellIndex = 12;//sheet.Cells.Columns.Count;
             sheet.Cells[0, priceCellIndex].Value = "单价";
             //写入数据
             int rowCount = sheet.Cells.MaxRow;
