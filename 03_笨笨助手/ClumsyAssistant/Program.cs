@@ -13,6 +13,13 @@ namespace ClumsyAssistant
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            Application.ThreadException += (sender, e) =>
+            {
+                var exception = e.Exception;
+                MessageBox.Show(exception.Message);
+            };
+
             new Aspose.Cells.License().SetLicense(License.LStream);
             Application.Run(new FrmMain());
         }

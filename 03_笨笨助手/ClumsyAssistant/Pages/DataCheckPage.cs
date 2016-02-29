@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
 using Aspose.Cells;
-using Aspose.Cells.Drawing;
+using ClumsyAssistant.Utilities;
 
 namespace ClumsyAssistant.Pages
 {
@@ -22,40 +20,12 @@ namespace ClumsyAssistant.Pages
         }
 
         #region 辅助方法
-        private string SelectFile()
-        {
-            OpenFileDialog ofd = new OpenFileDialog { Filter = "Excel文件|*.xls;*.xlsx", Multiselect = false };
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                return ofd.FileName;
-            }
-            return "";
-        }
-
-        private void Alert(string msg)
-        {
-            MessageBox.Show(msg, "爱心提示");
-        }
 
         private void AddLog(string log)
         {
             logBuilder.AppendFormat("{0} {1}{2}", DateTime.Now.ToString("HH:mm:ss"), log, Environment.NewLine);
             RtbLog.Text = logBuilder.ToString();
         }
-
-        private int GetDocumentNumberColIndex(Worksheet sheet)
-        {
-            var cells = sheet.Cells;
-            for (int i = 0; i <= cells.MaxColumn; i++)
-            {
-                if (cells[0, i].StringValue.StartsWith("单据编号"))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
 
         /// <summary>
         /// 根据Excel文件路径，获取单据编号
@@ -69,10 +39,10 @@ namespace ClumsyAssistant.Pages
             {
                 var workbook = new Workbook(filepath);
                 var sheet = workbook.Worksheets[0];
-                int colIndex = this.GetDocumentNumberColIndex(sheet);
+                int colIndex = ExcelHelper.GetColIndexByColName(sheet, "单据编号");
                 if (colIndex < 0)
                 {
-                    this.Alert("没有在文件“" + Path.GetFileName(filepath) + "”中找到“单据编号”列");
+                    Common.Alert("没有在文件“" + Path.GetFileName(filepath) + "”中找到“单据编号”列");
                     return null;
                 }
                 //     sheet.GetRow(1).RowStyle.FillBackgroundColor
@@ -91,11 +61,11 @@ namespace ClumsyAssistant.Pages
             }
             catch (IOException ioEx)
             {
-                this.Alert("读取Excel出错 => " + ioEx.Message);
+                Common.Alert("读取Excel出错 => " + ioEx.Message);
             }
             catch (Exception ex)
             {
-                this.Alert("获取单据号失败 => " + ex.Message);
+                Common.Alert("获取单据号失败 => " + ex.Message);
             }
             return null;
         }
@@ -112,11 +82,8 @@ namespace ClumsyAssistant.Pages
             cellStyle.BackgroundColor = Color.LightGreen;
             cellStyle.Pattern = BackgroundType.Solid;
             cellStyle.Font.Size = 40;
-            //new Style {BackgroundColor = Color.LightGreen};
-            //                        cellStyle.FillForegroundColor = HSSFColor.LightGreen.Index;
-            //                        cellStyle.FillPattern = FillPattern.SolidForeground;
 
-            int colIndex = this.GetDocumentNumberColIndex(sheet);
+            int colIndex = ExcelHelper.GetColIndexByColName(sheet, "单据编号");
             int colorRowCount = 0;
             for (int i = START_ROW_INDEX; i <= rowCount; i++)
             {
@@ -145,7 +112,7 @@ namespace ClumsyAssistant.Pages
 
         private void BtnSelectFile_Click(object sender, EventArgs e)
         {
-            var filepath = this.SelectFile();
+            var filepath = Common.SelectFile();
             if (!string.IsNullOrEmpty(filepath))
             {
                 TbFile.Text = filepath;
@@ -154,7 +121,7 @@ namespace ClumsyAssistant.Pages
 
         private void BtnSelectFile2_Click(object sender, EventArgs e)
         {
-            var filepath = this.SelectFile();
+            var filepath = Common.SelectFile();
             if (!string.IsNullOrEmpty(filepath))
             {
                 TbFile2.Text = filepath;
@@ -165,12 +132,12 @@ namespace ClumsyAssistant.Pages
         {
             if (TbFile.Text == "" || !File.Exists(TbFile.Text))
             {
-                this.Alert("请选择同兴源出/入库文件。");
+                Common.Alert("请选择同兴源出/入库文件。");
                 return;
             }
             if (TbFile2.Text == "" || !File.Exists(TbFile2.Text))
             {
-                this.Alert("请选择试剂部出/入库文件。");
+                Common.Alert("请选择试剂部出/入库文件。");
                 return;
             }
             logBuilder.Clear();
@@ -190,7 +157,7 @@ namespace ClumsyAssistant.Pages
                 this.AddLog("试剂部出/入库文件单据去重后总数：" + sjbDocNoList.Count);
                 var noList = sjbDocNoList.Except(txyDocNoList).ToList();
                 this.AddLog("试剂部出/入库文件与同兴源出/入库文件单据号差异数：" + noList.Count);
-                this.Alert("试剂部出/入库文件与同兴源出/入库文件单据号差异数：" + noList.Count);
+                Common.Alert("试剂部出/入库文件与同兴源出/入库文件单据号差异数：" + noList.Count);
                 this.FillBackgroundColor(TbFile2.Text, noList);
                 this.AddLog("校对完成，(^.^)");
             }

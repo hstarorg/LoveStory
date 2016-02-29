@@ -33,12 +33,12 @@
             this.系统SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于AToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.btnPriceFetch = new System.Windows.Forms.Button();
             this.btnInventoryCount = new System.Windows.Forms.Button();
             this.btnDataCheck = new System.Windows.Forms.Button();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.HomeTabPage = new System.Windows.Forms.TabPage();
-            this.btnPriceFetch = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.MenuPanel.SuspendLayout();
             this.MainPanel.SuspendLayout();
@@ -78,6 +78,17 @@
             this.MenuPanel.Name = "MenuPanel";
             this.MenuPanel.Size = new System.Drawing.Size(784, 40);
             this.MenuPanel.TabIndex = 1;
+            // 
+            // btnPriceFetch
+            // 
+            this.btnPriceFetch.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnPriceFetch.Location = new System.Drawing.Point(80, 0);
+            this.btnPriceFetch.Name = "btnPriceFetch";
+            this.btnPriceFetch.Size = new System.Drawing.Size(40, 40);
+            this.btnPriceFetch.TabIndex = 3;
+            this.btnPriceFetch.Text = "价格抓取";
+            this.btnPriceFetch.UseVisualStyleBackColor = true;
+            this.btnPriceFetch.Click += new System.EventHandler(this.btnPriceFetch_Click);
             // 
             // btnInventoryCount
             // 
@@ -130,17 +141,6 @@
             this.HomeTabPage.Text = "主页";
             this.HomeTabPage.UseVisualStyleBackColor = true;
             // 
-            // btnPriceFetch
-            // 
-            this.btnPriceFetch.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnPriceFetch.Location = new System.Drawing.Point(80, 0);
-            this.btnPriceFetch.Name = "btnPriceFetch";
-            this.btnPriceFetch.Size = new System.Drawing.Size(40, 40);
-            this.btnPriceFetch.TabIndex = 3;
-            this.btnPriceFetch.Text = "价格抓取";
-            this.btnPriceFetch.UseVisualStyleBackColor = true;
-            this.btnPriceFetch.Click += new System.EventHandler(this.btnPriceFetch_Click);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -154,7 +154,7 @@
             this.MaximizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "笨笨助手 V0.1";
+            this.Text = "笨笨助手 V0.3";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.MenuPanel.ResumeLayout(false);

@@ -29,29 +29,15 @@ namespace ClumsyAssistant.Pages
             RtbLog.Text = logBuilder.ToString();
         }
 
-        private int GetColIndexByColName(Worksheet sheet, string name)
-        {
-            var cells = sheet.Cells;
-            for (int i = 0; i <= cells.MaxColumn; i++)
-            {
-                if (cells[0, i].StringValue.StartsWith(name))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-
         private IList<MaterialEntity> GetTxyMaterialData(string filePath)
         {
             var result = new List<MaterialEntity>();
             var workbook = new Workbook(filePath);
             var sheet = workbook.Worksheets[0];
-            var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
-            var materialBatchIdx = this.GetColIndexByColName(sheet, "批号");
-            var materialNumberIndex = this.GetColIndexByColName(sheet, "数量");
-            var materialNameIndex = this.GetColIndexByColName(sheet, "物料名称");
+            var materialCodeIdx = ExcelHelper.GetColIndexByColName(sheet, "物料代码");
+            var materialBatchIdx = ExcelHelper.GetColIndexByColName(sheet, "批号");
+            var materialNumberIndex = ExcelHelper.GetColIndexByColName(sheet, "数量");
+            var materialNameIndex = ExcelHelper.GetColIndexByColName(sheet, "物料名称");
             if (materialCodeIdx < 0)
             {
                 Common.Alert("没有找到[物料代码]列！");
@@ -99,10 +85,10 @@ namespace ClumsyAssistant.Pages
             var result = new List<MaterialEntity>();
             var workbook = new Workbook(filePath);
             var sheet = workbook.Worksheets[0];
-            var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
-            var materialBatchIdx = this.GetColIndexByColName(sheet, "批号");
-            var materialNumberIndex = this.GetColIndexByColName(sheet, "数量");
-            var materialNameIndex = this.GetColIndexByColName(sheet, "物料名称");
+            var materialCodeIdx = ExcelHelper.GetColIndexByColName(sheet, "物料代码");
+            var materialBatchIdx = ExcelHelper.GetColIndexByColName(sheet, "批号");
+            var materialNumberIndex = ExcelHelper.GetColIndexByColName(sheet, "数量");
+            var materialNameIndex = ExcelHelper.GetColIndexByColName(sheet, "物料名称");
             if (materialCodeIdx < 0)
             {
                 Common.Alert("没有找到[物料代码]列！");
@@ -175,11 +161,7 @@ namespace ClumsyAssistant.Pages
             }
             var destPath = Path.GetDirectoryName(TbFile2.Text) + "/盘点结果数据表.xls";
             workbook.Save(destPath);
-            if (MessageBox.Show("导出文件成功，是否要打开文件？", "爱心提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                DialogResult.Yes)
-            {
-                Process.Start(destPath);
-            }
+            Common.NotifyAndOpenFile(destPath);
         }
         #endregion
 
@@ -318,8 +300,8 @@ namespace ClumsyAssistant.Pages
 
             var workbook = new Workbook(filePath);
             var sheet = workbook.Worksheets[0];
-            var materialCodeIdx = this.GetColIndexByColName(sheet, "物料代码");
-            var materialBatchIdx = this.GetColIndexByColName(sheet, "批号");
+            var materialCodeIdx = ExcelHelper.GetColIndexByColName(sheet, "物料代码");
+            var materialBatchIdx = ExcelHelper.GetColIndexByColName(sheet, "批号");
             //增加一列(同兴源数量列)
             var txyCountIndex = 11;//sheet.Cells.Columns.Count;
             sheet.Cells[0, txyCountIndex].Value = "同兴源数量";
@@ -339,11 +321,7 @@ namespace ClumsyAssistant.Pages
             }
             var destPath = Path.GetDirectoryName(TbFile2.Text) + "/试剂部库存盘点表.xls";
             workbook.Save(destPath);
-            if (MessageBox.Show("导出文件成功，是否要打开文件？", "爱心提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                DialogResult.Yes)
-            {
-                Process.Start(destPath);
-            }
+            Common.NotifyAndOpenFile(destPath);
         }
         #endregion
 
